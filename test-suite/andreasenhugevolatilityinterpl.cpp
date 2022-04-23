@@ -20,7 +20,6 @@
 #include "andreasenhugevolatilityinterpl.hpp"
 #include "utilities.hpp"
 #include <ql/math/comparison.hpp>
-#include <ql/math/functional.hpp>
 #include <ql/math/interpolations/sabrinterpolation.hpp>
 #include <ql/math/optimization/bfgs.hpp>
 #include <ql/math/optimization/simplex.hpp>
@@ -119,7 +118,7 @@ namespace andreasen_huge_volatility_interpl_test {
 
         calibrationSet.reserve(std::count_if(
             &raw[0][0], &raw[nStrikes-1][nMaturities]+1,
-            not_zero<Real>()) - nStrikes);
+            [](Real x) { return x != 0.0; }) - nStrikes);
 
         for (const auto & i : raw) {
             const Real strike = spot->value()*i[0];

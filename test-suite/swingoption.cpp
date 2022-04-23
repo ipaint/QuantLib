@@ -27,7 +27,6 @@
 #include <ql/instruments/vanillaswingoption.hpp>
 #include <ql/math/distributions/normaldistribution.hpp>
 #include <ql/math/factorial.hpp>
-#include <ql/math/functional.hpp>
 #include <ql/math/randomnumbers/rngtraits.hpp>
 #include <ql/math/richardsonextrapolation.hpp>
 #include <ql/math/statistics/generalstatistics.hpp>
@@ -84,8 +83,8 @@ void SwingOptionTest::testExtendedOrnsteinUhlenbeckProcess() {
         ExtendedOrnsteinUhlenbeckProcess::GaussLobatto};
 
     ext::function<Real (Real)> f[] 
-        = { constant<Real, Real>(level),
-            add<Real>(1.0),
+        = { [=](Real x){ return level; },
+            [ ](Real x){ return x + 1.0; },
             static_cast<Real(*)(Real)>(std::sin) }; 
 
     for (Size n=0; n < LENGTH(f); ++n) {
